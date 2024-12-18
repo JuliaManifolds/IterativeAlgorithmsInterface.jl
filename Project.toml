@@ -1,0 +1,4 @@
+name = "AlgorithmInterface"
+uuid = "125df6b2-f2b1-44d3-9e4a-6c50c163a640"
+authors = ["Ronny Bergmann <git@ronnybergmann.net>"]
+version = "0.1.0"
