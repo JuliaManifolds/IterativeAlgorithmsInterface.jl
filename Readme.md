@@ -1,4 +1,4 @@
-# AlgorithmInterface.jl
+# IterativeAlgorithmsInterface.jl
 
 `IterativeAlgorithmsInterface.jl` is a Julia package tp provide a common interface to run iterative tasks. **Algorith** here refers to an iterative sequence of commands, that are run until a certain stopping criterion is met.
 
