@@ -1,10 +1,10 @@
 # AlgorithmInterface.jl
 
-`AlgorithmInterface.jl` is a Julia package tp provide a common interface to run iterative tasks. **Algorith** here refers to an iterative sequence of commands, that are run until a certain stopping criterion is met.
+`IterativeAlgorithmsInterface.jl` is a Julia package tp provide a common interface to run iterative tasks. **Algorith** here refers to an iterative sequence of commands, that are run until a certain stopping criterion is met.
 
 # Statement of need
 
-A first approach to algorithms is a simple for-loop for a maxiimum number of iterations.
+A first approach to algorithms is a simple for-loop for a maximum number of iterations.
 Using an interface instead allows to both specify different criteria to stop easily, even in their combination.
 Furthermore a generic interface allows to both “hok into” an algorithm easily as well as combining them.
 
