@@ -14,8 +14,8 @@ A common interface for algorithms allows to reuse common code – especially sto
 
 We consider solving _Tasks_, which consist of a
 
-* `Problem` to solve, which constains all information that is static to the problem and usually does not change during the iterations, this might for example be a cost function and its gradient in an optimisation problem
-* An `AlgorithmState` that both specifies which algorithm to use to _solve_ the problem, but also stores all parameters that an algorithm needs as well as everything the algorithm needs to store between two iterations.
+* `AbstractProblem` to solve, which contains all information that is static to the problem and usually does not change during the iterations, this might for example be a cost function and its gradient in an optimisation problem
+* An `AbstractAlgorithmState` that both specifies which algorithm to use to _solve_ the problem, but also stores all parameters that an algorithm needs as well as everything the algorithm needs to store between two iterations.
 
 This generic data structures are accompanied by the methods
 
@@ -24,3 +24,17 @@ This generic data structures are accompanied by the methods
 * `stop(problem::Problem, state::AlgorithmState)` to check whether the algorithm should stop.
 
 where the first is the main one to implement for a new algorithm.
+
+# Further ideas
+
+* generic stopping criteria `<:AbstractStoppingCriterion`
+  * `StopAfterIteration(i)` for example
+* a factory that turns certain keywords like `maxiter=` into stopping criteria
+* still support the `stopping_criterion=` ideas from `Manopt.jl`
+* by default `stop()` from above would check such a stopping criterion
+* generic debug and record functionality – together with hooks even
+
+# possible extensions
+
+* to `LineSearches.jl`
+*
