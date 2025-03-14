@@ -1,9 +1,11 @@
-# IterativeAlgorithms.jl
+# AlgorithmsInterface.jl
+
+Welcome to the Documentation of `LieGAlgorithmsInterface.jl`.
+
+```@meta
+CurrentModule = AlgorithmsInterface
+```
 
 ```@docs
-Algorithm
-Problem
-State
-step!
-get_iteration
+AlgorithmsInterface.AlgorithmsInterface
 ```

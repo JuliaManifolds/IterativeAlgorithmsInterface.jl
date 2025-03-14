@@ -4,10 +4,12 @@
 An abstract type to represent a stopping criterion of an solver.
 
 Any concrete stopping criterion should be implemented as a functor,
-that takes the “usual tuple” `(p, a, s)` of a [`Problem`](@ref),
-an [`algorithm`](@ref) and a [`State`](@ref) as input
+that takes the “usual tuple” `(p, a, s)` of a [`Problem`](@ref) `p`,
+an [`Algorithm`](@ref) and a [`State`](@ref) as input, where this criterion
+should usually be part of the [`State`](@ref) itself.
 
 ## Methods
+
 A concrete `StoppingCriterion` `sc` should provide the following functions
 besides the above-mentioned functor is it itself
 
@@ -57,7 +59,7 @@ For the [`StopAfterIteration`](@ref) criterion, the summary looks like
 Max Iterations (15): not reached
 ```
 """
-get_summary(sc::StopAfterIteration)
+get_summary(sc::StoppingCriterion)
 
 @doc raw"""
     StopAfterIteration <: StoppingCriterion

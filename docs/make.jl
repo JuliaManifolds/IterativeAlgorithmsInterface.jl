@@ -40,7 +40,12 @@ makedocs(;
     modules = [AlgorithmsInterface],
     authors = "Ronny Bergmann, Lukas Devos, and contributors.",
     sitename = "AlgorithmsInterface.jl",
-    pages = ["Home" => "index.md", "References" => "references.md"],
+    pages = [
+        "Home" => "index.md",
+        "Interface" => "interface.md",
+        "Stopping criteria" => "stopping_criterion.md",
+        "References" => "references.md",
+    ],
     plugins = [bib, links],
 )
 deploydocs(;
