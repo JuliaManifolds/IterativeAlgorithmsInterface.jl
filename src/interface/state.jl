@@ -1,4 +1,4 @@
-"""
+@doc """
     State
 
 An abstract type to represent the state an iterative algorithm is in.

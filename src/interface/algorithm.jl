@@ -1,4 +1,4 @@
-"""
+@doc """
     Algorithm
 
 An abstract type to represent an algorithm.
