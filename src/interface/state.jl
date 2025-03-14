@@ -9,7 +9,7 @@ and keeps all information needed from one step to the next.
 Usually this should include
 
 * `iteration` – the current iteration step ``k`` that is is currently performed or was last performed
-* `stopping_criterion` – a [`StoppingCriterion`](@ref) that indicates whether the algorithm
+* `stopping_criterion` – a `StoppingCriterion` that indicates whether the algorithm
   will stop after this iteration or has stopped.
 * `iterate` the current iterate ``x^{(k)}```.
 
@@ -23,5 +23,7 @@ abstract type State end
     get_iteration(s::State)
 
 Return the current iteration a state either is currently performing or was last performed
+
+The default assumes that the current iteration is stored in `s.iteration`.
 """
 get_iteration(s::State) = s.iteration
