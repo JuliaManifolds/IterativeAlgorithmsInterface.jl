@@ -56,6 +56,7 @@ function solve!(p::Problem, a::Algorithm, s::State; kwargs...)
         increment!(s)
         step!(p, a, s)
     end
+    return s
 end
 
 function step! end
