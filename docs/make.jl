@@ -31,7 +31,11 @@ links = InterLinks()
 makedocs(;
     format = Documenter.HTML(;
         prettyurls = run_on_CI || ("--prettyurls" ∈ ARGS),
-        #        assets=["assets/favicon.ico", "assets/citations.css", "assets/link-icons.css"],
+        assets = [
+            #    "assets/favicon.ico",
+            "assets/citations.css",
+            "assets/link-icons.css",
+        ],
     ),
     modules = [AlgorithmsInterface],
     authors = "Ronny Bergmann, Lukas Devos, and contributors.",

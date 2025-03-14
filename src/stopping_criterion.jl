@@ -13,13 +13,51 @@ besides the above-mentioned functor is it itself
 
 * `get_reason(sc)` a human readable text of about one line of length providing a reason
   why this stopping criterion indicated to stop. An empty string if it did not indicate to stop
-* `status_summary(sc)` a short summary of this stopping criterion, and whether it was reached,
+* `get_summary(sc)` a short summary of this stopping criterion, and whether it was reached,
   e.g. a short string like `"Max Iterations (15): reached"`
 * `indicates_convergence(sc)` a boolean whether or not this stopping criterion would indicate
   that the algorithm has converged, if it indicates to stop.
-* `show(io::IO, sc)` to display its constructor and the `status_summary`
+* `show(io::IO, sc)` to display its constructor and the `get_summary`
 """
 abstract type StoppingCriterion end
+
+function get_reason end
+@doc """
+    get_reason(sc::StoppingCriterion)
+
+Provide a reason in human readable text as to why a [`StoppingCriterion`](@ref) indicated
+to stop. If it does not indicate to stop, this should return an empty string.
+
+Providing the iteration at which this indicated to stop would be preferrable.
+"""
+get_reason(::StoppingCriterion)
+
+function indicates_convergence end
+@doc """
+    indicates_convergence(sc::StoppingCriterion)
+
+Return whether or not a [`StoppingCriterion`](@ref) indicates convergence of an algorithm
+if it would indicate to stop.
+"""
+indicates_convergence(::StoppingCriterion)
+
+
+function get_summary end
+@doc """
+    get_summary(sc::StoppingCriterion)
+
+Provide a summary of the status of a stopping criterion – its parameters and whether
+it currently indicates to stop. It should not be longer than one line
+
+# Example
+
+For the [`StopAfterIteration`](@ref) criterion, the summary looks like
+
+```
+Max Iterations (15): not reached
+```
+"""
+get_summary(sc::StopAfterIteration)
 
 @doc raw"""
     StopAfterIteration <: StoppingCriterion
@@ -61,13 +99,13 @@ function get_reason(c::StopAfterIteration)
     return ""
 end
 indicates_convergence(sc::StopAfterIteration) = false
-function status_summary(c::StopAfterIteration)
+function get_summary(c::StopAfterIteration)
     has_stopped = (c.at_iteration >= 0)
     s = has_stopped ? "reached" : "not reached"
     return "Max Iteration $(c.max_iterations):\t$s"
 end
 function show(io::IO, c::StopAfterIteration)
-    return print(io, "StopAfterIteration($(c.max_iterations))\n    $(status_summary(c))")
+    return print(io, "StopAfterIteration($(c.max_iterations))\n    $(get_summary(c))")
 end
 
 """
@@ -125,12 +163,12 @@ function get_reason(sc::StopAfter)
     end
     return ""
 end
-function status_summary(c::StopAfter)
+function get_summary(c::StopAfter)
     has_stopped = (c.at_iteration >= 0)
     s = has_stopped ? "reached" : "not reached"
     return "stopped after $(c.threshold):\t$s"
 end
 indicates_convergence(c::StopAfter) = false
 function show(io::IO, sc::StopAfter)
-    return print(io, "StopAfter($(repr(sc.threshold)))\n    $(status_summary(sc))")
+    return print(io, "StopAfter($(repr(sc.threshold)))\n    $(get_summary(sc))")
 end
