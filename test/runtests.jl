@@ -1,5 +1,7 @@
 using AlgorithmsInterface, Test
 
-@testset "AlgorithmsInterface.jl" begin
-
+let
+    @testset "Newton" begin
+        include("newton.jl")
+    end
 end
