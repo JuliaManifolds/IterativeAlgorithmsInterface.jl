@@ -1,5 +1,7 @@
 module AlgorithmsInterface
 
+using Dates: Millisecond, Nanosecond, Period, canonicalize, value
+
 include("interface/algorithm.jl")
 include("interface/problem.jl")
 include("interface/state.jl")

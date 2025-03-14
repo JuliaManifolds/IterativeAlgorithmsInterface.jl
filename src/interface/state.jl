@@ -27,3 +27,13 @@ Return the current iteration a state either is currently performing or was last 
 The default assumes that the current iteration is stored in `s.iteration`.
 """
 get_iteration(s::State) = s.iteration
+
+function initialize_state end
+@doc """
+    initialize_state(p::Problem, a::Algorithm, kwargs...)
+
+Initialise a [`State`](@ref) `s` for a [`Problem`](@ref) `p` and an [`Algorithm`](@ref) `a`,
+where the keyword arguments should both uniquely identify the state and provide enough
+information to call its constructor.
+"""
+initialize_state(::Problem, ::Algorithm, kwargs...)
