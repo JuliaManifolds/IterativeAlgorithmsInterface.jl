@@ -49,7 +49,7 @@ makedocs(;
     plugins = [bib, links],
 )
 deploydocs(;
-    repo = "github.com/JuliaManifolds/IterativeAlgorithmsInterface.jl",
+    repo = "github.com/JuliaManifolds/AlgorithmsInterface.jl",
     push_preview = true,
 )
 #back to main env
