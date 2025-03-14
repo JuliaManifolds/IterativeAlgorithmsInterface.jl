@@ -1,5 +1,5 @@
 @doc raw"""
-🏔️ AlgorithmsInterface.jl: an interface for iterative algorithms in Julia
+🧮 AlgorithmsInterface.jl: an interface for iterative algorithms in Julia
 
 * 📚 Documentation: [juliamanifolds.github.io/AlgorithmsInterface.jl/](https://juliamanifolds.github.io/AlgorithmsInterface.jl/)
 * 📦 Repository: [github.com/JuliaManifolds/AlgorithmsInterface.jl](https://github.com/JuliaManifolds/AlgorithmsInterface.jl)
