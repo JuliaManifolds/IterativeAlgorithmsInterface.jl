@@ -48,9 +48,6 @@ makedocs(;
     ],
     plugins = [bib, links],
 )
-deploydocs(;
-    repo = "github.com/JuliaManifolds/AlgorithmsInterface.jl",
-    push_preview = true,
-)
+deploydocs(; repo = "github.com/JuliaManifolds/AlgorithmsInterface.jl", push_preview = true)
 #back to main env
 Pkg.activate()
