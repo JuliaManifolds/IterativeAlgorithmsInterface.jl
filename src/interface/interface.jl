@@ -30,7 +30,7 @@ end
 @doc """
     solve(p::Problem, a::Algorithm; kwargs...)
 
-Solve the Solve the [`Problem`](@ref) `p` using the [`Algorithm`](@ref) `a`.
+Solve the [`Problem`](@ref) `p` using the [`Algorithm`](@ref) `a`.
 The keyword arguments `kwargs...` have to provide enough details such that
 the corresponding state initialisation [`initialize_state`](@ref)`(p,a)`
 returns a state.
