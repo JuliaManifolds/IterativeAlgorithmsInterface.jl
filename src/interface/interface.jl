@@ -43,7 +43,7 @@ By default this method continues to call [`solve!`](@ref).
 """
 function solve(p::Problem, a::Algorithm; kwargs...)
     s = initialize_state(p, a; kwargs...)
-    return solve!(p, a, s; kwargs...)
+    return solve!(s, p, a; kwargs...)
 end
 
 @doc """
@@ -70,4 +70,4 @@ function step! end
 Perform the current step of an [`Algorithm`](@ref) `a` solving [`Problem`](@ref) `p`
 modifying the algorithms [`State`](@ref) `s`.
 """
-step!(state::State, p::Problem, a::Algorithm)
+step!(s::State, p::Problem, a::Algorithm)

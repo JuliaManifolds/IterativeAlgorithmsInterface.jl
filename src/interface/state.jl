@@ -68,4 +68,4 @@ Return the [`StoppingCriterionState`](@ref) of the [`State`](@ref) `s`.
 
 The default assumes that the criterion is stored in `s.stopping_criterion_state`.
 """
-get_stopping_criterion(s::State) = s.stopping_criterion_state
+get_stopping_criterion_state(s::State) = s.stopping_criterion_state
