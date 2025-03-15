@@ -15,7 +15,7 @@ consists of:
 The combination of the static information should be enough to initialize the varying data.
 
 This general scheme is a guiding principle of the package, splitting information into _static_
-or _configuration_ types or data that allows to [`initialize`](@ref) a correspondint _variable_ data type.
+or _configuration_ types or data that allows to [`initialize_state`](@ref) a correspondint _variable_ data type.
 
 The order of arguments is given by two ideas
 

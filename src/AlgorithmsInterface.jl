@@ -18,8 +18,8 @@ include("interface/interface.jl")
 include("stopping_criterion.jl")
 
 export Algorithm, Problem, State
-export StoppingCriterion
-export StopAfter, StopAfterIteration
+export StoppingCriterion, StoppingCriterionState
+export StopAfter, StopAfterIteration, StopWhenAll, StopWhenAny
 export is_finished
 export initialize_state, initialize_state!, is_finished
 export get_iteration
