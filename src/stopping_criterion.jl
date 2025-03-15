@@ -1,52 +1,73 @@
 @doc """
     StoppingCriterion
 
-An abstract type to represent a stopping criterion of an solver.
+An abstract type to represent a stopping criterion.
 
-Any concrete stopping criterion should be implemented as a functor,
-that takes the “usual tuple” `(p, a, s)` of a [`Problem`](@ref) `p`,
-an [`Algorithm`](@ref) and a [`State`](@ref) as input, where this criterion
-should usually be part of the [`State`](@ref) itself.
+A concrete [`StoppingCriterion`](@ref) `sc` should also implement a
+[`initialize(sc::StoppingCriterion)`](@ref) function to create its accompaying
+[`StoppingCriterionState`](@ref).
+It should usually implement
 
-## Methods
-
-A concrete `StoppingCriterion` `sc` should provide the following functions
-besides the above-mentioned functor is it itself
-
-* `get_reason(sc)` a human readable text of about one line of length providing a reason
-  why this stopping criterion indicated to stop. An empty string if it did not indicate to stop
-* `get_summary(sc)` a short summary of this stopping criterion, and whether it was reached,
-  e.g. a short string like `"Max Iterations (15): reached"`
 * `indicates_convergence(sc)` a boolean whether or not this stopping criterion would indicate
   that the algorithm has converged, if it indicates to stop.
-* `show(io::IO, sc)` to display its constructor and the `get_summary`
+* `show(io::IO, scs)` for use in REPL and display within an [`Algorithm`](@ref).
 """
 abstract type StoppingCriterion end
 
+@doc """
+    StoppingCriterionState
+
+An abstract type to represent a stopping criterion state withinn a [`State`](@ref).
+
+Any concrete stopping criterion should be implemented as a functor,
+that takes the “usual tuple” `(problem, algorithm, state, stopping_criterion)`
+of a [`Problem`](@ref) `p`, an [`Algorithm`](@ref) and a [`State`](@ref) as input,
+as well as the corresponding [`StoppingCriterion`](@ref). Though this is usually stored¨
+in the [`Algorithm`](@ref) `algorithm`, the extra parameter allows both for more flexibility and
+for multiple dispatch.
+The concrete [`StoppingCriterionState`](@ref) should be part of the [`State`](@ref) `state`.
+
+The functor might modify the stopping criterion state.
+"""
+abstract type StoppingCriterionState end
+
 function get_reason end
 @doc """
-    get_reason(sc::StoppingCriterion)
+    get_reason(sc::StoppingCriterion, scs::StoppingCriterionState)
 
-Provide a reason in human readable text as to why a [`StoppingCriterion`](@ref) indicated
-to stop. If it does not indicate to stop, this should return an empty string.
+Provide a reason in human readable text as to why a [`StoppingCriterion`](@ref) `sc
+with [`StoppingCriterionState`](@ref) `scs` indicated to stop.
+If it does not indicate to stop, this should return an empty string.
 
-Providing the iteration at which this indicated to stop would be preferrable.
+Providing the iteration at which this indicated to stop in the reason would be preferable.
 """
-get_reason(::StoppingCriterion)
+get_reason(::StoppingCriterion, ::StoppingCriterionState)
 
 function indicates_convergence end
 @doc """
     indicates_convergence(sc::StoppingCriterion)
 
-Return whether or not a [`StoppingCriterion`](@ref) indicates convergence of an algorithm
-if it would indicate to stop.
+Return whether or not a [`StoppingCriterion`](@ref) `sc` indicates convergence.
 """
-indicates_convergence(::StoppingCriterion)
+indicates_convergence(sc::StoppingCriterion)
 
+@doc """
+    indicates_convergence(sc::StoppingCriterion, ::StoppingCriterionState)
+
+Return whether or not a [`StoppingCriterion`](@ref) `sc` indicates convergence
+when it is in [`StoppingCriterionState`](@ref)
+
+By default this checks whether the [`StoppingCriterion`](@ref) has actually stopped.
+If so it returns whether `sc` itself indicates convergence, otherwise it returns `false`,
+since the algorithm has then not yet stopped.
+"""
+function indicates_convergence(sc::StoppingCriterion, scs::StoppingCriterionState)
+    return length(get_reason(sc, scs)) > 0 ? indicates_convergence(sc) : false
+end
 
 function get_summary end
 @doc """
-    get_summary(sc::StoppingCriterion)
+    get_summary(sc::StoppingCriterion, scs::StoppingCriterionState)
 
 Provide a summary of the status of a stopping criterion – its parameters and whether
 it currently indicates to stop. It should not be longer than one line
@@ -59,18 +80,16 @@ For the [`StopAfterIteration`](@ref) criterion, the summary looks like
 Max Iterations (15): not reached
 ```
 """
-get_summary(sc::StoppingCriterion)
+get_summary(sc::StoppingCriterion, scs::StoppingCriterionState)
 
 @doc raw"""
     StopAfterIteration <: StoppingCriterion
 
-A functor for a stopping criterion to stop after a maximal number of iterations.
+A simple stopping criterion to stop after a maximal number of iterations.
 
 # Fields
 
 * `max_iterations`  stores the maximal iteration number where to stop at
-* `at_iteration` indicates at which iteration (including `i=0`) the stopping criterion
-  was fulfilled and is `-1` while it is not fulfilled.
 
 # Constructor
 
@@ -78,23 +97,43 @@ A functor for a stopping criterion to stop after a maximal number of iterations.
 
 initialize the functor to indicate to stop after `maxIter` iterations.
 """
-mutable struct StopAfterIteration <: StoppingCriterion
-    max_iterations::Int
-    at_iteration::Int
-    StopAfterIteration(k::Int) = new(k, -1)
+struct StopAfterIteration <: StoppingCriterion
+     max_iterations::Int
 end
-function (sc::StopAfterIteration)(::Problem, ::Algorithm, s::State)
+
+"""
+DefaultStoppingCriterionState <: StoppingCriterionState
+
+A [`StoppingCriterionState`](@ref) that does not require any information besides
+storing the iteration number when it (last) indicated to stop).
+
+# Field
+* `at_iteration::Int` store the iteration number this state
+  indicated to stop.
+  * `0` means already at the start it indicated to stop
+  * any negative number means that it did not yet indicate to stop.
+"""
+mutable struct DefaultStoppingCriterionState
+    at_iteration::Int
+    DefaultStoppingCriterionState() = new(-1)
+end
+
+initialize(::Problem, ::Algorithm, ::State, ::StopAfterIteration) = DefaultStoppingCriterionState()
+function initialize!(scs::DefaultStoppingCriterionState, ::Problem, ::Algorithm, ::State, ::StopAfterIteration)
+    scs.indicated_convergence_at = -1
+    return scs
+end
+
+function (sc::DefaultStoppingCriterionState)(::Problem, ::Algorithm, s::State, sc::StopAfterIteration)
     k = get_iteration(s)
-    if k == 0 # reset on init
-        sc.at_iteration = -1
-    end
+    (k == 0) && (sc.at_iteration = -1)
     if k >= sc.max_iterations
         sc.at_iteration = k
         return true
     end
     return false
 end
-function get_reason(c::StopAfterIteration)
+function get_reason(c::StopAfterIteration, scs::DefaultStoppingCriterionState)
     if c.at_iteration >= c.max_iterations
         return "At iteration $(c.at_iteration) the algorithm reached its maximal number of iterations ($(c.max_iterations)).\n"
     end

@@ -6,10 +6,13 @@ An abstract type to represent the state an iterative algorithm is in.
 The state consists of any information that describes the current step the algorithm is in
 and keeps all information needed from one step to the next.
 
-Usually this should include
+## Usual fields
+
+Usually this should include the following. If you use this naming scheme, default functions
+e.g. as accessors
 
 * `iteration` – the current iteration step ``k`` that is is currently performed or was last performed
-* `stopping_criterion` – a `StoppingCriterion` that indicates whether the algorithm
+* `stopping_criterion_state` – a [`StoppingCriterionState`](@ref) that indicates whether an [`Algorithm`](@ref)
   will stop after this iteration or has stopped.
 * `iterate` the current iterate ``x^{(k)}```.
 
@@ -17,11 +20,13 @@ These variable names given in this list are the defaults for which the accessors
 such that if your concrete `MyState <: State` follows this convention, you do not have to reimplement
 their accessors.
 
-# Methods
+## Methods
+
 The following methods should be implemented for a state
+
 * [`get_iteration`](@ref)`(s)` to return the current iteration number
 * [`increment!](@ref)`(s)`
-* [`get_stopping_criterion`](@ref) return the [`StoppingCriterion`](@ref)
+* [`get_stopping_criterion_state`](@ref) return the [`StoppingCriterionState`](@ref)
 * [`get_iterate`](@ref) return the current iterate ``x^{(k)}``.
 """
 abstract type State end
@@ -57,10 +62,10 @@ function increment!(s::State)
 end
 
 """
-    get_stopping_criterion(s::State)
+    get_stopping_criterion_state(s::State)
 
-Return the [`StoppingCriterion`](@ref) of the [`State`](@ref) `s`.
+Return the [`StoppingCriterionState`](@ref) of the [`State`](@ref) `s`.
 
-The default assumes that the criterion is stored in `s.stopping_criterion`.
+The default assumes that the criterion is stored in `s.stopping_criterion_state`.
 """
-get_stopping_criterion(s::State) = s.stopping_criterion
+get_stopping_criterion(s::State) = s.stopping_criterion_state

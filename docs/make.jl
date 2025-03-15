@@ -44,6 +44,7 @@ makedocs(;
         "Home" => "index.md",
         "Interface" => "interface.md",
         "Stopping criteria" => "stopping_criterion.md",
+        "Notation" => "notation.md",
         "References" => "references.md",
     ],
     plugins = [bib, links],
