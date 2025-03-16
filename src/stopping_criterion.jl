@@ -280,11 +280,7 @@ end
 @inline _fast_any(f, tup::Tuple{}) = true
 @inline _fast_any(f, tup::Tuple{T}) where {T} = f(tup[1])
 @inline function _fast_any(f, tup::Tuple)
-    if f(tup[1])
-        return true
-    else
-        return _fast_any(f, tup[2:end])
-    end
+    f(first(tup[1])) || _fast_any(f, Base.tail(tup))
 end
 
 function (scs::GroupStoppingCriterionState)(
