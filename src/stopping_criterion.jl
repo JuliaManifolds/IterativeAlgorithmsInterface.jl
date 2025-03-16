@@ -18,7 +18,7 @@ abstract type StoppingCriterion end
 @doc """
     StoppingCriterionState
 
-An abstract type to represent a stopping criterion state withinn a [`State`](@ref).
+An abstract type to represent a stopping criterion state within a [`State`](@ref).
 
 Any concrete stopping criterion should be implemented as a functor,
 that takes the “usual tuple” `(problem, algorithm, state, stopping_criterion)`
