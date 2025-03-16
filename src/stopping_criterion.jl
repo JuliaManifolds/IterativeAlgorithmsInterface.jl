@@ -403,7 +403,7 @@ struct StopAfter <: StoppingCriterion
     threshold::Period
     function StopAfter(t::Period)
         if value(t) < 0
-            error("You must provide a positive time period")
+            throw(ArgumentError("You must provide a positive time period"))
         else
             s = new(t)
         end
