@@ -104,7 +104,7 @@ struct StopWhenAll{TCriteria<:Tuple} <: StoppingCriterion
 end
 
 function indicates_convergence(sc::StopWhenAll)
-    return any(indicates_convergence(sc_i) for sc_i in sc.criteria)
+    return any(indicates_convergence, sc.criteria)
 end
 
 function show(io::IO, sc::StopWhenAll)
